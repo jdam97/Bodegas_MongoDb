@@ -1,0 +1,359 @@
+use("mongo_Bodegas");
+db.createCollection("counters");
+db.counters.insertMany([
+  { ID: "wineriesId", sequence_value: 0 },
+  { ID: "productsId", sequence_value: 0 },
+  { ID: "inventoriesId", sequence_value: 0 },
+  { ID: "historiesId", sequence_value: 0 },
+  { ID: "usersId", sequence_value: 0 },
+]);
+
+use("mongo_Bodegas");
+db.createCollection("products", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "description", "state", "created_by", "created_at"],
+      properties: {
+        ID: {
+          bsonType: "int",
+          description: "ID must be a int",
+        },
+        name: {
+          bsonType: "string",
+          description: "Name is required and it must be a string",
+        },
+        description: {
+          bsonType: "string",
+          maxLength: 100,
+          description:
+            "Description is required and it must be a string with a maximum length of 100 ",
+        },
+        state: {
+          bsonType: "string",
+          enum: ["activo", "inactivo"],
+          description:
+            "State is required and it must be a string between 'active' or 'inactive'",
+        },
+        created_by: {
+          bsonType: "int",
+          description: "created_by is required and it must be a integer",
+        },
+        updated_by: {
+          bsonType: "int",
+          description: "updated_by must be a integer",
+        },
+        created_at: {
+          bsonType: "string",
+          description: "created_at is required and it must be a date",
+        },
+        updated_at: {
+          bsonType: "string",
+          description: "updated_at must be a date",
+        },
+        deleted_at: {
+          bsonType: "string",
+          description: "deleted_at must be a date",
+        },
+      },
+    },
+  },
+});
+
+use("mongo_Bodegas");
+db.createCollection("inventories", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "ID_winery",
+        "ID_product",
+        "cantity",
+        "created_by",
+        "created_at",
+      ],
+      properties: {
+        ID: {
+          bsonType: "int",
+          description: "ID must be a int",
+        },
+        ID_winery: {
+          bsonType: "int",
+          description:
+            "ID_winery is required and it must be a Integer greater than 0",
+        },
+        ID_product: {
+          bsonType: "int",
+          description:
+            "ID_product is required and it must be a Integer greater than 0",
+        },
+        cantity: {
+          bsonType: "int",
+          minimum: 0,
+          description: "cantity is required,it must be a Integer and minimun 0",
+        },
+        created_by: {
+          bsonType: "int",
+          description: "created_by is required and it must be a integer",
+        },
+        updated_by: {
+          bsonType: "int",
+          description: "updated_by must be a integer",
+        },
+        created_at: {
+          bsonType: "string",
+          description: "created_by is required and it must be a date",
+        },
+        updated_at: {
+          bsonType: "string",
+          description: "updated_at must be a date",
+        },
+        deleted_at: {
+          bsonType: "string",
+          description: "deleted_at must be a date",
+        },
+      },
+    },
+  },
+});
+
+use("mongo_Bodegas");
+db.createCollection("histories", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "cantity",
+        "ID_originWinery",
+        "ID_destinyWinery",
+        "ID_inventory",
+        "created_by",
+        "created_at",
+      ],
+      properties: {
+        ID: {
+          bsonType: "int",
+          description: "ID must be a int",
+        },
+        cantity: {
+          bsonType: "int",
+          description: "cantity is required,it must be a Integer and minimun 0",
+        },
+        ID_originWinery: {
+          bsonType: "int",
+          description:
+            "ID_originWinery is required and it must be a Integer greater than 0",
+        },
+        ID_destinyWinery: {
+          bsonType: "int",
+          description:
+            "ID_destinyWinery is required,it must be a Integer and minimun 0",
+        },
+        ID_inventory: {
+          bsonType: "int",
+          description:
+            "ID_inventory is required,it must be a Integer and minimun 0",
+        },
+        created_by: {
+          bsonType: "int",
+          description: "created_by is required and it must be a integer",
+        },
+        updated_by: {
+          bsonType: "int",
+          description: "updated_by must be a integer",
+        },
+        created_at: {
+          bsonType: "string",
+          description: "created_at is required and it must be a date",
+        },
+        updated_at: {
+          bsonType: "string",
+          description: "updated_at must be a date",
+        },
+        deleted_at: {
+          bsonType: "string",
+          description: "deleted_at must be a date",
+        },
+      },
+    },
+  },
+});
+
+use("mongo_Bodegas");
+db.createCollection("wineries", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "ID_responsable", "state", "created_by", "created_at"],
+      properties: {
+        ID: {
+          bsonType: "int",
+          description: "ID must be an int",
+        },
+        name: {
+          bsonType: "string",
+          description: "name is required and it must be a string",
+        },
+        ID_responsable: {
+          bsonType: "int",
+          description:
+            "ID_responsable is required and it must be an Integer greater than 0",
+        },
+        state: {
+          bsonType: "string",
+          enum: ["activo", "inactivo"], // Corrected enum values
+          description:
+            "state is required, it must be a string between 'activo' and 'inactivo'",
+        },
+        created_by: {
+          bsonType: "int",
+          description: "created_by is required and it must be an integer",
+        },
+        updated_by: {
+          bsonType: "int",
+          description: "updated_by must be an integer",
+        },
+        created_at: {
+          bsonType: "string",
+          description: "created_at is required and it must be a string",
+        },
+        updated_at: {
+          bsonType: "string",
+          description: "updated_at must be a string",
+        },
+        deleted_at: {
+          bsonType: "string",
+          description: "deleted_at must be a string",
+        },
+      },
+    },
+  },
+});
+
+use("mongo_Bodegas");
+db.createCollection("users", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: [
+        "name",
+        "email",
+        "email_verified_at",
+        "state",
+        "created_by",
+        "password",
+        "created_at",
+      ],
+      properties: {
+        ID: {
+          bsonType: "int",
+          description: "ID must be a int",
+        },
+        name: {
+          bsonType: "string",
+          description: "name is required and it must be a string",
+        },
+        email: {
+          bsonType: "string",
+          pattern: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+          description:
+            "email is required and it must be a string valid email address",
+        },
+        email_verified_at: {
+          bsonType: "string",
+          description: "email_verified_at is required and it must be a date",
+        },
+        state: {
+          bsonType: "string",
+          description:
+            "state is required,it must be a string betweend 'activo' and 'inactivo'",
+        },
+        created_by: {
+          bsonType: "int",
+          description: "created_by is required and it must be a integer",
+        },
+        updated_by: {
+          bsonType: "int",
+          description: "updated_by must be a integer",
+        },
+        foto: {
+          bsonType: "string",
+          description: "foto must be a string",
+        },
+        password: {
+          bsonType: "string",
+          description: "password must be a string",
+        },
+        created_at: {
+          bsonType: "string",
+          description: "created_by is required and it must be a date",
+        },
+        updated_at: {
+          bsonType: "string",
+          description: "updated_at must be a date",
+        },
+        deleted_at: {
+          bsonType: "string",
+          description: "deleted_at must be a date",
+        },
+      },
+    },
+  },
+});
+
+use("mongo_Bodegas");
+db.products.insertOne({
+  ID: 1,
+  name: "Cerveza aguila",
+  description: "Cerveza con porcentaje de alcohol en 4.2%",
+  state: "activo",
+  created_by: 1005184201,
+  created_at: "2023-08-11T08:31:00Z",
+});
+
+use("mongo_Bodegas");
+db.inventories.insertOne({
+  ID: 1,
+  ID_winery: 1,
+  ID_product: 1,
+  cantity: 1,
+  created_by: 1234578901,
+  created_at: "2023-08-11T08:31:00Z",
+});
+
+use("mongo_Bodegas");
+db.histories.insertOne({
+  ID: 1,
+  cantity: 10,
+  ID_originWinery: 1,
+  ID_destinyWinery: 2,
+  ID_inventory: 1,
+  created_by: 1234578901,
+  created_at: "2023-10-10T08:15:26Z",
+});
+
+use("mongo_Bodegas");
+db.wineries.insertOne({
+  ID: 1,
+  name: "Bodega 1",
+  ID_responsable: 1234578901,
+  state: "activo",
+  created_by: 1234578901,
+  created_at: "2023-10-10",
+});
+
+use("mongo_Bodegas");
+db.users.insertOne({
+  ID: 1,
+  name: "Juan Camilo",
+  email: "camilo1@gmail.com",
+  email_verified_at: "2023-10-10T08:15:26Z",
+  password: "Juan123",
+  state: "activo",
+  created_by: 1234578901,
+  created_at: "2023-10-10T08:15:26Z",
+});
+
+
+use("mongo_Bodegas");
+db.getCollection("products").find().sort({ name: 1 })
