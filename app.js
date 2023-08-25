@@ -4,15 +4,15 @@ import {limitRequest} from "./config/limit.js"
 
 //Routers
 import Bodegas from "./Routers/bodejas.js"
-
+import Producto from "./Routers/productos.js"
 
 const app = express();
 app.use(express.json());
 
 
 //Endpoints
-app.use("/bodegas",limitRequest(),Bodegas)
-
+app.use("/bodegas",limitRequest(),Bodegas);
+app.use("/productos",limitRequest(),Producto);
 
 
 
