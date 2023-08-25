@@ -51,13 +51,10 @@ Producto.post("/", async(req,res)=>{
         
         let collection = db.collection("products");
         await collection.insertOne(req.body)
-        res.status(200).json({
-            message:"Se ha insertado un producto nuevo",
-            data: req.body,
-        });
         let {ID,created_at,created_by} = req.body
 
         let collectinvent= db.collection("inventories");
+        
         await collectinvent.insertOne({
             ID,
             ID_winery:1,
@@ -66,6 +63,11 @@ Producto.post("/", async(req,res)=>{
             created_by,
             created_at
         })
+        
+        res.status(200).json({
+            message:"Se ha insertado una producto nuevo",
+            data: req.body,
+        });
 
 
         
