@@ -43,4 +43,40 @@ Producto.get("/",async (req,res)=>{
     }
 })
 
+//7. Realizar un EndPoint que permita insertar un productos y a su vez asigne una cantidad inicial del mismo en la tabla inventarios en una de las bodegas por default.
+
+Producto.post("/", async(req,res)=>{
+    console.log(req.rateLimit);
+    try {
+        
+        let collection = db.collection("products");
+        await collection.insertOne(req.body)
+        res.status(200).json({
+            message:"Se ha insertado un producto nuevo",
+            data: req.body,
+        });
+        let {ID,created_at,created_by} = req.body
+
+        let collectinvent= db.collection("inventories");
+        await collectinvent.insertOne({
+            ID,
+            ID_winery:1,
+            ID_product:1,
+            cantity:1,
+            created_by,
+            created_at
+        })
+
+
+        
+    } catch (error) {
+        res.status(500).json({
+            message: "no se pudo insertar un producto nuevo",
+            error:error.message
+        })
+    }
+})
+
+
+
 export default Producto;
