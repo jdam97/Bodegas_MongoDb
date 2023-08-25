@@ -14,7 +14,7 @@ Bodegas.get("/",async (req,res)=>{
     console.log(req.rateLimit);
     try {
         let collection = db.collection("wineries");
-        let data = await collection.find()
+        let data = await collection.find().sort({name:1})
         .toArray();
         res.send(data)
     } catch (error) {
@@ -25,5 +25,24 @@ Bodegas.get("/",async (req,res)=>{
     }
 })
 
+//Post
+//5. Realizar un EndPolnt que permita crear una bodegas.(agregar en los comentarios de la función los datos de entrada).
+Bodegas.post("/",async(req,res)=>{
+    console.log(req.rateLimit);
+    try {
+        let collection = db.collection("wineries");
+        await collection.insertOne(req.body);
+        res.status(200).json({
+            message:"Se ha insertado una nueva bodega",
+            data: req.body,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message:"Error al crear nueva bodega",
+            error:error.message
+        })
+    }
+})
 
 export default Bodegas;
