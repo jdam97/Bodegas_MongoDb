@@ -9,10 +9,10 @@ import Producto from "./Routers/productos.js"
 const app = express();
 app.use(express.json());
 
-
+app.use(limitRequest())
 //Endpoints
-app.use("/bodegas",limitRequest(),Bodegas);
-app.use("/productos",limitRequest(),Producto);
+app.use("/bodegas",Bodegas);
+app.use("/productos",Producto);
 
 
 

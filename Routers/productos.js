@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { Router } from "express";
 import {connectDB} from "../config/connectiondb.js"
+import validarProductos from "../middleware/productosMiddleware.js";
+import { validationResult } from "express-validator";
 
 const Producto = Router();
 
@@ -45,8 +47,12 @@ Producto.get("/",async (req,res)=>{
 
 //7. Realizar un EndPoint que permita insertar un productos y a su vez asigne una cantidad inicial del mismo en la tabla inventarios en una de las bodegas por default.
 
-Producto.post("/", async(req,res)=>{
+Producto.post("/",validarProductos, async(req,res)=>{
     console.log(req.rateLimit);
+    //Validacion    
+    const errors = validationResult(req); 
+    if (!errors.isEmpty()) return res.status(422).send(errors); 
+      
     try {
         
         let collection = db.collection("products");

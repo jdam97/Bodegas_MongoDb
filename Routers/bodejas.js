@@ -2,6 +2,7 @@ import "dotenv/config"; //eso me remplaca el dotenv.config() de una vez.
 import { Router } from "express";
 import {connectDB} from "../config/connectiondb.js";
 import validacionBodegas from "../middleware/bodegasMiddleware.js"
+import { validationResult } from "express-validator";
 
 const Bodegas = Router();
 
