@@ -1,6 +1,7 @@
 import "dotenv/config"; //eso me remplaca el dotenv.config() de una vez.
 import { Router } from "express";
 import {connectDB} from "../config/connectiondb.js";
+import validacionBodegas from "../middleware/bodegasMiddleware.js"
 
 const Bodegas = Router();
 
@@ -27,8 +28,11 @@ Bodegas.get("/",async (req,res)=>{
 
 //Post
 //5. Realizar un EndPolnt que permita crear una bodegas.(agregar en los comentarios de la función los datos de entrada).
-Bodegas.post("/",async(req,res)=>{
+Bodegas.post("/",validacionBodegas,async(req,res)=>{
     console.log(req.rateLimit);
+        //Validacion    
+        const errors = validationResult(req); 
+        if (!errors.isEmpty()) return res.status(422).send(errors);    
     try {
         let collection = db.collection("wineries");
         await collection.insertOne(req.body);
